@@ -1,0 +1,395 @@
+{
+  "info": {
+    "_postman_id": "hackmate-team-finder-api-v1",
+    "name": "HackMate API",
+    "description": "Comprehensive Postman Collection for HackMate — Hackathon Team Finder for College Students",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alex Chen\",\n  \"email\": \"alex@stanford.edu\",\n  \"password\": \"password123\",\n  \"college\": \"Stanford University\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"aarav@hackmate.dev\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User Profile (/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Get Dashboard Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "dashboard"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Students & Profiles",
+      "item": [
+        {
+          "name": "Get All Students (Filters & Search)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users?search=react&role=Fullstack Developer&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"],
+              "query": [
+                { "key": "search", "value": "react" },
+                { "key": "role", "value": "Fullstack Developer" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Student Profile By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/users/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Passionate fullstack hacker who loves building AI apps.\",\n  \"preferredRole\": \"Fullstack Developer\",\n  \"skills\": [\"React\", \"TypeScript\", \"Node.js\", \"Tailwind\"],\n  \"interests\": [\"AI & Machine Learning\", \"FinTech\"],\n  \"githubUrl\": \"https://github.com/myhandle\",\n  \"linkedinUrl\": \"https://linkedin.com/in/myhandle\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hackathons",
+      "item": [
+        {
+          "name": "List Hackathons (Filter & Search)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/hackathons?theme=AI&mode=Online&upcoming=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["hackathons"],
+              "query": [
+                { "key": "theme", "value": "AI" },
+                { "key": "mode", "value": "Online" },
+                { "key": "upcoming", "value": "true" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Hackathon Details with Teams",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/hackathons/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["hackathons", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Create Hackathon Listing",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"CalHacks 13.0\",\n  \"tagline\": \"The world's largest collegiate hackathon\",\n  \"description\": \"Join 2,500 builders at UC Berkeley for 36 hours of hacking.\",\n  \"theme\": \"Open Innovation\",\n  \"mode\": \"In-Person\",\n  \"location\": \"San Francisco, CA\",\n  \"startDate\": \"2026-10-15T00:00:00.000Z\",\n  \"endDate\": \"2026-10-17T00:00:00.000Z\",\n  \"registrationDeadline\": \"2026-10-01T00:00:00.000Z\",\n  \"prizePool\": \"$100,000\",\n  \"minTeamSize\": 2,\n  \"maxTeamSize\": 4,\n  \"skillsRequired\": [\"React\", \"Python\", \"AI\", \"Figma\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/hackathons",
+              "host": ["{{baseUrl}}"],
+              "path": ["hackathons"]
+            }
+          }
+        },
+        {
+          "name": "Update Hackathon",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prizePool\": \"$120,000\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/hackathons/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["hackathons", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Hackathon",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/hackathons/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["hackathons", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Teams",
+      "item": [
+        {
+          "name": "Get All Teams",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/teams",
+              "host": ["{{baseUrl}}"],
+              "path": ["teams"]
+            }
+          }
+        },
+        {
+          "name": "Get Team Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/teams/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["teams", ":id"]
+            }
+          }
+        },
+        {
+          "name": "Create Team for Hackathon",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"VectorVibe\",\n  \"description\": \"Building multimodal semantic audio search.\",\n  \"hackathonId\": \"<HACKATHON_ID>\",\n  \"requiredSkills\": [\"FastAPI\", \"PyTorch\", \"UI/UX Designer\"],\n  \"maxMembers\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/teams",
+              "host": ["{{baseUrl}}"],
+              "path": ["teams"]
+            }
+          }
+        },
+        {
+          "name": "Remove Member / Leave Team",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"<USER_ID>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/teams/:id/members/remove",
+              "host": ["{{baseUrl}}"],
+              "path": ["teams", ":id", "members", "remove"]
+            }
+          }
+        },
+        {
+          "name": "Delete Team",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/teams/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["teams", ":id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invitations",
+      "item": [
+        {
+          "name": "Send Invitation to Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": \"<TEAM_ID>\",\n  \"receiverId\": \"<STUDENT_USER_ID>\",\n  \"message\": \"Hey! We love your design portfolio and would love you on our team.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invitations",
+              "host": ["{{baseUrl}}"],
+              "path": ["invitations"]
+            }
+          }
+        },
+        {
+          "name": "Get Received Invitations",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invitations/received?status=pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["invitations", "received"],
+              "query": [
+                { "key": "status", "value": "pending" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Sent Invitations",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invitations/sent",
+              "host": ["{{baseUrl}}"],
+              "path": ["invitations", "sent"]
+            }
+          }
+        },
+        {
+          "name": "Respond to Invitation (Accept or Decline)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invitations/:id/respond",
+              "host": ["{{baseUrl}}"],
+              "path": ["invitations", ":id", "respond"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Pending Invitation",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invitations/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["invitations", ":id"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
